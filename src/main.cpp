@@ -13,15 +13,17 @@
 //--------------------------------------
 //#define MQTT_TLS // uncomment this define to enable TLS transport
 //#define MQTT_TLS_VERIFY // uncomment this define to enable broker certificate verification
-const char* ssid = "YOUR-WIFI";
-const char* password = "YOUR-WIFI-PSK";
-const char* mqtt_server = "BROKER"; // eg. your-demo.cedalo.cloud or 192.168.1.11
+const char* ssid = "Airtel_varshi";
+const char* password = "Varshi@203";
+const char* mqtt_server = "broker.hivemq.com"; // eg. your-demo.cedalo.cloud or 192.168.1.11
 const uint16_t mqtt_server_port = 1883; // or 8883 most common for tls transport
 const char* mqttUser = "user";
 const char* mqttPassword = "pass";
-const char* mqttTopicIn = "esp-8266-in";
-const char* mqttTopicOut = "esp-8266-out";
-
+const char* mqttTopicIn = "varnit-mqtt-in";
+const char* mqttTopicOut = "varnit-mqtt-out";
+int motor1Pin1 = 12; 
+int motor1Pin2 = 14; 
+int enable1Pin = 13; 
 //--------------------------------------
 // globals
 //--------------------------------------
@@ -71,6 +73,14 @@ void setup_wifi() {
 //--------------------------------------
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived on topic: '");
+    Serial.println("running motors");
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH); 
+   digitalWrite(LED_BUILTIN, LOW);
+  delay(5000);
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW); 
+   digitalWrite(LED_BUILTIN, HIGH);
   Serial.print(topic);
   Serial.print("' with payload: ");
   for (unsigned int i = 0; i < length; i++) {
@@ -79,7 +89,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
 
   String myCurrentTime = timeClient.getFormattedTime();
-  mqttClient.publish(mqttTopicOut,("ESP8266: Cedalo Mosquitto is awesome. ESP8266-Time: " + myCurrentTime).c_str());
+  //mqttClient.publish(mqttTopicOut,("ESP8266: Cedalo Mosquitto is awesome. ESP8266-Time: " + myCurrentTime).c_str());
 }
 
 //--------------------------------------
@@ -110,6 +120,10 @@ void setup() {
   setup_wifi();
   mqttClient.setServer(mqtt_server, mqtt_server_port);
   mqttClient.setCallback(callback);
+  Serial.println("settting up motor pins");
+   pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 //--------------------------------------
