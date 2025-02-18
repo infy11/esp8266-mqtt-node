@@ -77,7 +77,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, HIGH); 
    digitalWrite(LED_BUILTIN, LOW);
-  delay(5000);
+  delay(120000);
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, LOW); 
    digitalWrite(LED_BUILTIN, HIGH);
